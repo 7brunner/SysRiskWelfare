@@ -1,0 +1,653 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{makeidx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[dvipsnames,svgnames,table]{xcolor}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{float}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\date{Draft version: \today}
+
+\title{Rational behaviour, welfare and systemic risk}
+\author{Christoph Siebenbrunner}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The aim of the paper is to study whether a private-sector bailout can emerge endogenously, when agents act rationally in the absence of a government intervention. I study a contagion model in which firms may prevent default cascades by bailing out defaulted firms. Using this model, I derive the conditions for social efficiency and individual rationality of bailouts. Bailouts are almost always socially efficient but hardly ever individually rational because of an interesting feature of contagion effects. There exists a solution that is both individually rational and socially efficient. However, it does not constitute a non-cooperative equilibrium. I conclude that a policy intervention in which firms are forced to contribute an amount proportional to the contagion losses received towards a bailout can provide a solution to this dilemma.
+\end{abstract}
+
+\section{Introduction}
+A financial system consists of firms that are interlinked via bilateral exposures. In such a system the default of a single firm may trigger a cascade of contagious defaults whenever the losses that creditors of a defaulted firm are facing exceed their capital buffers. Such contagion effects are seen as a key component of \textit{systemic risk} \cite[pp. 134-142]{ECB09}. It is the nature of contagion effects that small initial capital shortfalls may be amplified through a cascade of contagious defaults. Put another way this means that the total losses caused by an initial default can exceed the amount it would cost to prevent the default cascade. The main contribution of this paper is to investigate whether a bailout of a failed institution can emerge endogenously, without a government intervention.
+
+The scenario studied in this paper is the 'canonical second' after the default of at least one firm in the system, when the remainder of the firms are left with the choice of either accepting the losses - and, possibly, the default cascade - resulting from the default or using their own funds in order to perform a bailout. This hypothetical scenario corresponds to real-life situations: e.g., the weekend after the failure of the investment bank Lehman Brothers had become clear, the chief executives of the main U.S. banks gathered at the headquarters of the New York Fed to learn that the U.S. treasury would not provide any financial assistance for a bailout. They were arguably aware of the dramatic consequences that a default of Lehman Brothers was going to have, however they were unable (or unwilling) to organize a bailout among them. In this paper I will study whether this outcome was due to operational difficulties or rather to be expected under rational behaviour.
+
+This paper builds on a rich strand of literature on contagion and systemic risk. Early works on contagion include Rochet and Tirole \cite{Roc96}, who investigate the incentives of a central bank for assisting failing banks, and Allen and Gale \cite{All00}. Allen and Gale build on the model developed by Diamond and Dybvig \cite{Dia83} in their seminal contribution and use it to show that a system of interlinked financial institutions is subject to the threat of contagion. They show that, for a system of four banks, a complete network structure of lending relationships is more stable than a ring-shaped network structure because of risk sharing benefits. However, their model is not suited to compute the actual contagion losses faced by firms in a contagion scenario. This is a difficult endeavour because default cascades may reach debtors of already insolvent firms, necessitating a re-evaluation of recovery rates for all their creditors. Eisenberg and Noe \cite{Eis01} present a model that allows computing the equilibrium solution after accounting for all higher-order contagion effects. They show that a unique solution always exists and present an algorithm that converges to the solution after a finite number of iterations. However, their model does not account for behavioural effects as firms do not react to the threat of a default cascade and take no actions to prevent it. I will build on the model of Eisenberg and Noe and extend it to include the aforementioned behavioural aspects.
+
+The potential effects of bailouts have been studied in Leitner \cite{Lei05}. Building on the model of Allen and Gale, Leitner studies the potential benefits of contagion by arguing that the threat of contagion may induce solvent firms to bail out defaulted firms. Assuming that bailouts are guaranteed, firms can engage in optimal risk sharing and thus improve total welfare. I will argue in this paper that the aggregate observation that it may be collectively beneficial for a group of firms to bail out other firms loses significance when looking at the disaggregate level of individual firms because of an interesting feature of contagion effects: while firms that are pushed into default through contagion effects typically do not have enough capital collectively to perform a bailout, the sum of losses faced by surviving firms typically is less than the initial capital shortfall, hence they do not have an incentive to bail out the initially defaulted firms. (see chapter Contagion Dynamics-todo:Ref). Further I will address the question left open by Leitner whether coordination may also occur without centralized intervention by showing that bailout contributions are subject to a free rider problem.
+
+Other works on contagion and systemic risk have often focussed on refining the computation of contagion losses or studying the relation between network structure and contagion properties. Upper \cite{Upp11} provides an overview of the former branch, examples of the latter include Gai and Kapadia \cite{Gai10}, Nier et al. \cite{Nie07} and Iori et al. \cite{Ior06}. Cordella and Yeyati \cite{Cor03} argue that the 'value effect' of bank bailouts outweighs the moral hazard effects.
+
+The remainder of the paper is structured as follows: chapters \ref{sec:basicmodel} and \ref{sec:bailoutmodel} present the analytical framework used throughout the paper and formalize the motivation set out verbally above. Chapter~\ref{sec:welfare} discusses the properties of the model and presents the social dilemma constituted by contagion dynamics. Chapter~\ref{sec:equilibrium} presents a possible policy measure to solve this dilemma and chapter~\ref{sec:conclusion} concludes.
+
+\section{A basic model of contagion} 
+\label{sec:basicmodel}
+\subsection{Preliminary definitions}
+
+This section gathers a small number of standard definitions as they were used in Eisenberg and Noe \cite{Eis01}. Let $\mathbb{R}^n$ be an $n$-dimensional Euclidean vector space. All vectors are defined as column vectors and for any two vectors $x,y \in \mathbb{R}^n$ define the following lattice operations:
+
+\[
+x \wedge y = 
+\begin{pmatrix}
+\min (x_1, y_1)\\
+\dots\\
+\min (x_n, y_n)\\
+\end{pmatrix}
+\]
+
+\[
+x \vee y = 
+\begin{pmatrix}
+\max (x_1, y_1)\\
+\dots\\
+\max (x_n, y_n)\\
+\end{pmatrix}
+\]
+
+Any ordering of elements of $\mathbb{R}^n$ refers to the point-wise ordering induced by the lattice operations \cite{Eis01}:
+
+\[ x \le y \Leftrightarrow \forall i \in 1 \dots n \colon x_i \le y_i \]
+\[ x < y \Leftrightarrow \forall i \in 1 \dots n \colon x_i < y_i \]
+
+\subsection{The Eisenberg/Noe model}
+Similar to the approaches of Elsinger et al. \cite{Els06} and Elsinger \cite{Els09}, I introduce a specification of the Eisenberg/Noe \cite{Eis01} model that gives a clear representation of the balance sheet of a firm. Consider a system of $n$ nodes corresponding to the number of firms in the system plus one sink node that concentrates all the liabilities firms have to creditors outside the system and that has no liabilities towards any firm in the system, as proposed by Eisenberg and Noe \cite{Eis01}. The asset side of the balance sheet is broken down into assets that represent claims on other firms within the system and \textbf{other assets}, represented by a column vector $e \in \mathbb{R}^n$, where each entry corresponds to the other assets of a firm. Other assets are non-negative for all firms $e \ge 0$ and assumed to be positive for some firms such that the mild regularity conditions set out in Eisenberg and Noe \cite{Eis01} are met. To capture the intra-system claims consider the $n \times n$ matrix $L$ of \textbf{nominal liabilities}, where $L_{i,j} \ge 0$ represents the liabilities of firm $i$ towards firm $j$. The inclusion of a sink node guarantees that the sum of elements in each row of $L$ corresponds to the \textbf{total nominal liabilities} $\bar{p}=L \vec{1}$. Now consider the matrix $\Pi$ of \textbf{relative liabilities} whose elements are given by: 
+
+\[
+\Pi_{ij} = \begin{cases} 
+\frac{L_{ij}}{\bar{p_i}} &\mbox{if } \bar{p_i} > 0 \\ 
+0 & \mbox{otherwise } \end{cases}
+\]
+
+Note that the inclusion of a sink node guarantees that $\vec{1}' \Pi =\vec{1}'$, which I will need later in the analysis. The nominal value of intra-system claims is thus given by: $\Pi' \bar{p}$. These definitions allow computing the \textbf{equity} as the difference between assets and liabilities: $e+\Pi' \bar{p}-\bar{p}$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{BalanceSheet.png}
+\caption{\label{fig:BalanceSheet}Balance sheet model}
+\end{figure}
+
+Note that in the case of defaults, not all firms are able to honour all their obligations in full. Initial defaults may trigger further defaults and the resulting new equilibrium is characterized by a unique clearing payment vector $p^* \le \bar{p}$. To compute the clearing payment vector consider the following map which returns the required payment $\bar{p}$ for all nodes who are not in default under $p'$ and for all other nodes the node's equity value assuming that nondefaulting nodes under $p'$ pay $\bar{p}$ and defaulting nodes pay $\bar{p}$ \cite{Eis01}:
+
+\[
+FF_{p'}(p)=\Lambda (p')(e+\Pi'(\Lambda (p')p+(I-\Lambda (p'))\bar{p})) \wedge (I-\Lambda (p'))\bar{p}
+\]
+
+Where $\Lambda (p)$ is a diagonal matrix whose values along the diagonal equal $1$ for defaulting nodes and $0$ for others, hence premultiplying by $\Lambda (p)$ will set entries corresponding to nondefaulting nodes to $0$ \cite{Eis01}:
+
+\[
+(\Lambda (p))_{ij}= \begin{cases}
+1 & \mbox{if } i=j,e_{i}+(\Pi 'p)_{i}<\bar{p}_{i} \\
+0 & \mbox{otherwise} \\
+\end{cases}
+\]
+
+Now denote by $f(p')$ the (unique) fixed point of $FF_{p'}$. Eisenberg and Noe \cite{Eis01} show that the sequence $p^j=f(p^(j-1) )$ initiated with $p^0=p$ decreases to the unique clearing payment vector after at most $n$ iterations. Reduced payments imply lower value of claims and hence reduce the equity of creditors. The \textbf{equity after accounting for contagion losses} is given by $e+\Pi' p^* -\bar{p}$.
+
+\subsection{Simulation of the Eisenberg/Noe model and motivation of the paper}
+Consider the following system of three firms:
+
+\[ L=
+\begin{pmatrix}
+ 0 &  0 &  0 \\
+20 &  0 & 15 \\
+20 & 10 &  0 \\
+\end{pmatrix}, e =
+\begin{pmatrix}
+20 \\
+15 \\
+16 \\
+\end{pmatrix}, \bar{p} = 
+\begin{pmatrix}
+ 0 \\
+35 \\
+30 \\
+\end{pmatrix}, e+\Pi' \bar{p}-\bar{p} = 
+\begin{pmatrix}
+ 60 \\
+-10 \\
+  1 \\
+\end{pmatrix}, p^* = 
+\begin{pmatrix}
+ 0 \\
+23.7 \\
+26.2 \\
+\end{pmatrix}
+\]
+
+Note that there is a node in this system, $2$, that is initially insolvent, while the other two nodes are initially solvent (i.e. before recognising any contagion losses). This initial situation thus corresponds to the canonical second after the default firm $2$, as mentioned in the introduction. If there is no bailout, then node $3$ will not repay its obligations in full under the unique clearing payment vector, hence it will be pushed into default through contagion losses. The initial capital shortfall at firm $2$ is only $-10$, while the difference between the nominal liabilities and the clearing payment vector sums to $\vec{1}'(\bar{p}-p^*)=-15.1$. Hence the initial capital shortfall is amplified through contagion effects. Put another way, it would cost only $10$ monetary units (MU) to prevent losses of over $15$ MU. \textit{The main question this paper seeks to answer is whether rational firms bail out firm $2$ in order to prevent the contagion losses from realizing.}
+
+\section{A contagion model with bailouts}
+\label{sec:bailoutmodel}
+\subsection{Definition of a bailout}
+A bailout is defined as a transfer of capital from one firm to another that reduces capital at one firm and increases capital at another firm by the same amount. The set of bailout strategies adopted by all firms is represented by a matrix $B$ of bilateral transfers. For simplicity, the information who is paying to whom can be discarded and the set of bailout strategies is then represented by the sum of bailout payments made or received by any node $b=B\vec{1}$. Given that a bailout affects equity values, it may also affect the clearing payment vector. The clearing payment vector for a given set of bailout strategies is denoted by $p^*(b)$. It can be computed by adapting the original Eisenberg/Noe formula:
+
+\[
+FF_{b,p'}(p)=\Lambda (p')(e+b+\Pi'(\Lambda (p')p+(I-\Lambda (p'))\bar{p})) \wedge (I-\Lambda (p'))\bar{p}
+\]
+
+Where 
+
+\[
+(\Lambda (p))_{ij}= \begin{cases}
+1 & \mbox{if }i=j,e_{i}+b+(\Pi 'p)_{i}<\bar{p}_{i} \\
+0 & \mbox{otherwise} \\
+\end{cases}
+\]
+
+The matrix $B$ fulfils the following conditions:
+
+\begin{itemize}
+\item A bailout payment always goes from one firm to another: $\forall i\ne j \colon B_{ij}=-W_{ji} $
+\item Firms do not transfer capital to themselves: $B_{ij}=0 \forall i=j$
+\item Bailout payments are non-positive for firms that are solvent after contagion losses: $\forall i \notin D^{*} \colon W_{ij}\le 0$
+\item Bailout payments are non-negative for initially insolvent firms: $\forall i \in D \colon W_{ij} \ge 0$
+\end{itemize}
+
+Note that these conditions imply that the sum of bailout payments is always equal to zero: $\vec{1}'b=0$, an important restriction that guarantees that bailouts do not artificially increase the capital in the system. A bailout is said to be \textbf{feasible} if no solvent firm transfers more than its equity value: $\forall i\notin D^* (b)_i \colon -b \le e_i+(\Pi' p^* (b))_i-\bar{p}_i$.
+
+The definitions of equity before and after contagion losses may be adapted to include bailout payments. Bailout support can come in various forms such as equity injections or loan forbearance. I will not distinguish between different forms of bailouts as I am only interested in the effect that a bailout has on a firm’s equity position. One may hypothesize that acquiring an equity stake in a company will have a different effect on a firm’s equity position than loan forbearance, but I will argue that for the case when insolvent institutions are bailed out this is not the case.
+
+To show this I define a bilateral holding matrix $\Phi$, where $0\le \Phi_{ij}\le 0$ represents the share of firm $i$ held by bank $j$, as introduced by Elsinger \cite{Els09}. In order to guarantee regularity of equity values it is assumed that there is no group of banks where each bank is entirely owned by other banks in that group, i.e. there exists no subset $I\subset{1\dots n}$ such that $\sum_{j\in I} \Phi_{ij} =1$. Under the assumption of limited liability of the owners of a firm the stake held in a firm cannot turn into a liability. The equity value of a firm is thus given by $W^* (p,b)=e+\Pi'p^*+b+\Phi'(V^* (p,b)\vee \vec{0})-\bar{p}$. Elsinger \cite{Els09} shows that under these conditions there exists a smallest and a largest clearing payment vector and presents an algorithm that converges to the largest clearing payment vector.
+
+\begin{lemma} \label{lem:freebailout}
+Bailout payments that do not exceed the capital shortfall do not affect the value of the stake in a company that is bailed out.
+\end{lemma}
+
+\begin{proof}
+For any insolvent firm $(V^* (p,\vec{0}))_i$ must be negative. Hence the value of the stake in the company $(V^* (p,\vec{0})\vee \vec{0})_i$ is equal to $0$. Any bailout payments $b_i$ for this firm that are less than or equal to the capital shortfall will increase its equity value $(V^* (p,b))_i$ to at most $0$. Hence the value of the stake in the company $(W^* (p,\vec{0}) \vee \vec{0})_i$ is unaffected by the bailout.
+\end{proof}
+
+One way of interpreting this result is to say that one can assume that firms performing a bailout are always rewarded with an equity stake in the company that is bailed out. This can serve as an argument for why considerations of competition effects or a possible gain from taking over the business of a defaulted firm are not taken into account: from an investor's perspective it does not matter whether business is generated at a holding company or at a subsidiary of that firm, hence it does not make a difference whether a firm takes over a defaulting firm or lets it go into bankruptcy and takes over its assets subsequently. It is assumed that there are no costs to resolution hence the value of assets or the cost of purchasing them in a liquidation is equal to the book value of these assets. This assumption is implied by the Eisenberg/Noe \cite{Eis01} model. 
+
+\subsection{Further definitions}
+The \textbf{initial capital shortfall} is a vector that contains a positive amount for every firm that is in default before contagion losses and $0$ for every other firm: $\bar{p}-((e+\Pi'\bar{p})\wedge \bar{p})$. The sum of capital shortfalls is referred to as the \textbf{total initial capital shortfall}: $\vec{1}' (\bar{p}-((e+\Pi' \wedge \bar{p})\wedge \bar{p}))$. The difference between the vector of nominal liabilities and the clearing payment vector gives the \textbf{losses caused} by each firm, $\bar{p}-p^*$, which can be interpreted as every firm’s contribution to systemic risk. \textbf{Total losses} are the sum of these losses caused $\vec{1}' (\bar{p}-p^* )$ and can be interpreted as the cost of systemic risk. The affectedness by these costs for each firm is given by \textbf{losses received}: $\Pi' (\bar{p}-p^* )$. Given that the system described herein is value-conserving it is easy to show that the sum of losses received is equal to the sum of losses caused.
+
+\begin{lemma} \label{lem:totlosses}
+Total losses are equal to the sum of losses received: \end{lemma}
+\begin{proof}\[
+\vec{1}' \Pi'=\vec{1}' \Rightarrow \vec{1}' \Pi' (\bar{p}-p^* )=\vec{1}'(\bar{p}-p^* )
+\] \end{proof}
+
+
+Let $D=\left\{ {i\vert e_i+(\Pi'\bar{p})_i<\bar{p_i} } \right\}$ be the set of nodes that are in initial default (i.e. before contagion losses), and $D^*=\left\{ {i\vert e_i+(\Pi'p^* )_i<\bar{p_i} } \right\}$ the set of nodes that are in default after contagion losses. 
+
+\begin{lemma} \label{lem:defaultset}
+The set of nodes that are in default initially is a subset of the set of nodes that are in default after contagion losses:
+\end{lemma}
+\begin{proof}
+\begin{align*}
+\begin{split}
+& p^* \le \bar{p} \Rightarrow \Pi'p^* \le \Pi'\bar{p} \Rightarrow (\Pi'p^*)_i \le (\Pi'\bar{p})_i \forall i \\
+& \Rightarrow \left\{ {i\vert e_i+(\Pi'p^* )_i<\bar{p_i} } \right\} \supseteq \left\{ {i\vert e_i+(\Pi'\bar{p})_i<\bar{p_i} } \right\}
+\Rightarrow D\subseteq D^*
+\end{split}
+\end{align*}
+\end{proof}
+
+Throughout the remainder of the paper I will assume that the surviving firms have more capital than the initial capital shortfall, so that a bailout of all firms is in principle always feasible: 
+\[
+\vec{1}' \Lambda (p^* )(e+\Pi'p^*-\bar{p})>\vec{1}' (\bar{p}-((e+\Pi'\bar{p})\wedge \bar{p}))
+\]
+
+This assumption is motivated by the fact that I want to study the emergence of endogenous bailouts. An endogenous bailout can only emerge if the system in total has enough capital to perform a bailout - other situations are possible, but are not the subject of this study.
+
+\subsection{Individual rationality and social efficiency}
+
+Firms' objective is to maximize their equity value:
+\[
+\max_{b_i}(e_i+b_i+(\Pi' p^* (b))_i-\bar{p}_i )
+\]
+Bailout payments are a variable to this objective function subject to the constraints set out above. The optimization problem described herein is the choice that firms are facing in the canonical second before contagion losses occur. The liability matrix and asset vectors are public knowledge and firms correctly anticipate the clearing payment vector. Hence, they adjust their bailout payments in order to maximise their equity value. It follows that contributing towards a bailout is \textbf{individually rational} for a firm if the amount that it contributes to the bailout is less than or equal to the reduction in contagion losses received by this firm that is achieved through the bailout, which is a function of bailout payments made by all firms: 
+\begin{align*}
+\begin{split}
+& -b_i \le (\Pi' p^* (b))_i-(\Pi' p^* )_i \\
+& \Leftrightarrow e_i+b_i+(\Pi' p^* (b_i,b_{-i} ))_i-\bar{p}_i \ge e_i+(\Pi' p^* (0,b_{-i} ))_i-\bar{p}_i
+\end{split}
+\end{align*}
+
+Above, I argued that there might be a case for performing a bailout because the total losses of $15.1$ MU exceeded the cost $10$ MU of performing a bailout. In order to formalize this intuition, I will argue that the policymaker is concerned with maximising the value of loan repayments while minimising the cost of performing a bailout: 
+
+\[
+\max_{b}(\vec{1}' (p^* (b) - \Lambda (p^* (b))b))
+\]
+
+A bailout is thus said to be socially \textbf{efficient} if it costs less than the amount by which it reduces systemic risk: $\vec{1}' (\Lambda (p^* (b))b) \le \vec{1}' (p^* (b)-p^* )$. One may argue that the policymaker is in fact concerned with maximising the consolidated value of the system, given by the sum of all assets taht are not represented by intra-system claims $\max \sum_{i}e_i$. The choice of the objective definition clearly has implications for the definition of social efficiency - under the consolidated view, there exist in fact no contagion losses whatsoever, and thus there exists no socially efficient bailout. There exist many arguments for why a policymaker might prefer to minimise the amount of unrepaid loans in the financial system (e.g. costs incurred by loss of trust, as observed after the crash of Lehman Brothers). Given that the main goal of the paper is to study whether bailouts emerge endogenously, without the intervention of a policymaker, I will leave this discussion here and I will employ the non-consolidated view of social efficiency hereafter, to study what implications bailouts have under this definition.
+Given that $b$ may contain real values, there exist an infinity of possible bailout vectors $b$ and associated clearing payment vectors $p^*(b)$. However, there are important cornerstone cases, namely those where $p^*(b) = \bar{p}$, meaning that the bailout payments are high enough to bail out all firms that are in initial default.
+
+\begin{lemma} \label{lem:efficientbailout}
+When all firms that are in default are bailed out, the bailout is efficient iff the total capital shortfall is less than the total contagion losses.
+\end{lemma}
+
+\begin{proof}
+All firms in default are bailed out $\forall i \in D^* (b) \colon b_i=\bar{p}_i-e_i-(\Pi' p^* (b))_i$
+
+Now rewrite the definition of social efficiency:
+\[
+\vec{1}' (\Lambda(p^* (b))b) < \vec{1}' (p^* (b)-p^* ) \Leftrightarrow
+\vec{1}' (\Lambda(\bar{p})(\bar{p}_i-e_i-(\Pi' p^* (b))_i )) < \vec{1}' (p^* (b)-p^* )
+\]
+When all firms are bailed out one can set: $p^* (b)=\bar{p}$
+\[
+\vec{1}' (\Lambda(\bar{p})(\bar{p}_i-e_i-(\Pi' \bar{p})_i ))= \vec{1}' (\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p}))
+\]
+Hence when $p^* (b)=\bar{p}$ the definition of social efficiency can be rewritten as:
+\[
+\vec{1}' (\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p})) < \vec{1}' (\bar{p}-p^* )
+\]
+\end{proof}
+
+This result is important for the further analysis because it states that when the joint bailout of all firms is considered, one can replace the clearing payment vector under a given payment vector, $p^* (b)$, which does not have a closed-form expression, with the vector of total liabilities $\bar{p}$.Hence the rest of the analysis will focus on this special case.
+%Given that the clearing payment vector is monotonous in the bailout vector \todo{Beweis}, this restriction does not diminish the value of the results: consider that when no bailout is performed, the value of the payoff function is $p^*$, and that when all firms are bailed out, the value of the objective function is $\bar{p}$.
+
+%Consider a bailout $t\in\mathbb{R}^n$ where all firms in default are bailed out and which is socially efficient, i.e. the reduction in systemic risk is greater than the sum of bailout payments $\vec{1}' (\bar{p}(t)-p^* ) > \vec{1}' \Lambda(\bar{p}(t)t)>0$. 
+%If no bailout payments were made, the two expressions would be equal to zero: $ p^*(\vec{0}) = p^* \Rightarrow \vec{1}' (p^*(b)-p^* ) = \vec{1}' \Lambda(\bar{p}(b)b) = 0$. 
+%Now assume that there exists a bailout with lower bailout payments $k\in\mathbb{R}^n < t$ that gives a higher value for the objective function $\vec{1}' (p^* (k) - \Lambda (p^* (k))k) > \vec{1}' (p^* (t) - \Lambda (p^* (t))t)$
+
+%Rearrange
+%$\vec{1}' (p^* (k) - p^* (t)) > \vec{1}' (\Lambda (p^* (k))k - \Lambda (p^* (t))t)$
+
+%when it holds true that a bailout is socially efficient $\vec{1}' (\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p})) < \vec{1}' (\bar{p}-p^* )$
+
+%$\forall t \ge b \colon p^*(t) \ge p^*(b)$
+
+\section{Welfare Analysis}
+\label{sec:welfare}
+\subsection{Social Efficiency}
+The initial simulation of the Eisenberg/Noe model was an example of a strictly socially efficient bailout, as the total contagion losses of $-15.1$ exceeded the initial capital shortfall of $-10$. It can be shown that bailouts are strictly socially efficient under mild conditions. 
+
+\begin{theorem}\label{the:socefficiency}
+Whenever a contagious default is caused or whenever a firm in initial default has exposure towards another firm that is in default after contagion losses, i.e. either $\sum_{i \in D} \sum_{j \in D^*} \Pi'_{ij} >0$ or $D \subset D^*$ holds true, it is strictly socially efficient to bail out all firms in default.
+\end{theorem}
+\textit{Proof}: see appendix
+
+\subsection{Individual rationality}
+Considering again the system from the initial simulation it can be seen that the losses faced by the surviving firm are less than the initial capital shortfall of $-10$, even though the total losses of $-15.1$ exceed this amount. Put another way, this means that the additional losses exceeding the initial capital shortfall are entirely concentrated at the defaulting firms, while it is not rational for the surviving firm to perform a bailout on its own:
+\[
+\Pi' (\bar{p}-p^* )=
+\begin{pmatrix}
+-9 \\
+-1.3 \\
+-4.8 \\
+\end{pmatrix}
+\]
+
+It can be shown that this result is not due to the parameter choice of the simulation but is in fact a general phenomenon.
+
+\begin{theorem} \label{the:shortfall}
+The initial capital shortfall is equal to the sum of losses faced by non-defaulting firms plus the sum of initial equity values of firms that are pushed into default:
+\[
+\vec{1}' (\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p}))= \vec{1}' ((I-\Lambda(p^* ))(\Pi' (\bar{p}-p^* ))+(\Lambda(p^* )-\Lambda(\bar{p}))(e+\Pi' \bar{p}-\bar{p}))
+\]
+\end{theorem}
+
+\textit{Proof}: see appendix
+
+\begin{corollary} \label{cor:indifferent}
+Firms that are not pushed into default through contagion losses are at best indifferent towards a bailout, even when it is efficient, because their losses are less than or equal to the initial capital shortfall:
+
+\begin{align*}
+\begin{split}
+& \vec{1}' (I-\Lambda(p^* ))(\Pi' (\bar{p}-p^* )) \\
+& = \vec{1}' (\bar{p}-(\Lambda(\bar{p})(e+\Pi' \bar{p})+(I-\Lambda(\bar{p}) \bar{p}))-(\Lambda(p^* )-\Lambda(\bar{p}))(e+\Pi' \bar{p}-\bar{p})) \\
+& \le \vec{1}' (\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p}))
+\end{split}
+\end{align*}
+\end{corollary}
+
+\begin{corollary} \label{cor:rational}
+Whenever a firm with positive initial equity value is pushed into default through contagion losses, it is not rational for solvent firms to bail out defaulted firms
+\[
+(\Lambda(p^* )-\Lambda(\bar{p}))(e+\Pi' \bar{p}-\bar{p}) \Leftrightarrow \vec{1}' (I-\Lambda(p^* ))(\Pi' (\bar{p}-p^* ))<\vec{1}' (\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p}))
+\]
+\end{corollary}
+
+\begin{corollary} \label{cor:losses}
+All losses exceeding the initial capital shortfall are concentrated at firms that are in default: 
+
+In Corollary ~\ref{cor:indifferent} in was shown that the losses received by firms that are solvent after contagion losses $\vec{1}' (I-\Lambda(p^* ))(\Pi' (\bar{p}-p^* ))$ is less or equal to the initial capital shortfall, while in Theorem \ref{the:socefficiency} it was shown that the total losses may exceed the initial capital shortfall. Hence it follows that the losses received by firms that are in default after contagion losses have to make up for the difference $\vec{1}' \Lambda(p^* ) \Pi' (\bar{p}-p^* )$. Another way of putting this is to say that the only firms for which it is rational to contribute towards a bailout are those firms that do not have the necessary funds to achieve a bailout on their own.
+\end{corollary}
+
+\subsection{Contagion Dynamics}
+It is important to fully appreciate the implications of Theorems~\ref{the:socefficiency} and~\ref{the:shortfall}. Initially solvent firms being pushed into default is the ‘base case’ in a contagion scenario, and the probability of a firm having equity exactly equal to zero is low. Theorem~\ref{the:socefficiency} states that in such a case, bailouts are always strictly efficient. However, according to Theorem~\ref{the:shortfall}, it is never rational for the group of surviving firms to bail out the defaulted firms. The reason for this dilemma is that, according to corollary~\ref{cor:rational}, the nature of contagion dynamics is such that all of the additional losses are directed towards firms that are already in default, even if the system as a whole would be able to bear them. 
+
+\section{Equilibrium analysis}
+\label{sec:equilibrium}
+\subsection{An efficient solution}
+
+Consider the following bailout: all firms that are not pushed into default contribute an amount equal to the contagion losses received, and all firms that are pushed into default through the bailout contribute their initial equity to the bailout:
+
+\[
+t_i=
+\begin{cases}
+(-(\Pi' (\bar{p}-p^* ))_i  & \mbox{if } i \notin D^* \\
+-(e+\Pi' \bar{p}-\bar{p})_i & \mbox{if } i \notin D,i \in D^* \\
+(\bar{p}-e-\Pi' \bar{p})_i & \mbox{if } i \in D
+\end{cases}
+\]
+
+This solution has the following properties:
+\begin{itemize}
+\item It is sufficient to bail out all defaulted banks: this follows from Theorem~\ref{the:shortfall}
+\item It is \textbf{individually rational} for all firms: $\forall i \notin D \colon -t_i \le (\Pi' p^* (t))_i-(\Pi' p^* )_i$
+\item It is \textbf{socially efficient}: $\forall i \notin D \colon \vec{1}' (\Lambda(p^* (t))t) \le \vec{1}' (p^* (t)-p^* )$
+\item It is the unique solution that is both individually rational and socially efficient: this follows from Theorem~\ref{the:shortfall}
+\item It is \textbf{feasible}: $\forall i \notin D \colon -t_i \le e_i+(\Pi' p^* (t))_i-\bar{p}_i$
+\item Is is \textbf{Pareto efficient}:
+\begin{itemize}
+\item Any increase in bailout payments would lower the equity value for all firms that have to contribute
+\item Any decrease in bailout payments would lower the equity value for all firms that are pushed into default through the bailout
+\end{itemize}
+\end{itemize}
+
+\subsection{Equilibrium solution}
+The efficient solution presented above corresponds to a feasible bailout strategy that is individually rational for all firms. An important question is whether this solution might also occur in equilibrium if agents act rationally and the coordination of the bailout is seen as a non-cooperative game: the amount $b_i \le 0$ contributed towards a bailout represents the strategy profile for each player. Given that only firms that are not in initial default can contribute towards a bailout, the set of players is $\bar{D}$. Contributing towards a bailout is illegal if a firm is in default, hence firms that contribute towards a bailout but are still pushed into default are are punished with a very high penalty that reduces their payoffs to $-M$, where $M$ is an amount greater than any payoff in the game. The payoff function for firm $i\notin D$ is thus given by:
+
+\[
+f_i (b)= \begin{cases}
+-M &\mbox{if } i\in D^* (b),b_i<0 \\
+b_i+(\Pi' (p^* (b)-p^* ))_i  &\mbox{otherwise}
+\end{cases}
+\]
+
+Considering again the example above: firms $1$ and $3$ are the two firms that are not in initial default, hence these will be player $1$ and player $2$ in the game. Consider now for each players the two strategy profile corresponding to either contributing the amount given by the efficient solution presented above to a bailout (strategy $B$) or not contributing at all to the payout (strategy $NB$). The payoff matrix for this game will then look as follows:
+\\
+\\
+\begin{tabular}{|l|l|c|c|}
+\hline
+ & Player 2 & &  \\ \hline
+Player 1 & & B & NB \\ \hline
+ & B & $f_1 \begin{pmatrix}
+-9 \\
+10 \\
+-1 \\
+\end{pmatrix}$ / $f_3 \begin{pmatrix}
+-9 \\
+10 \\
+-1 \\
+\end{pmatrix}$ & $f_1 \begin{pmatrix}
+-9 \\
+9 \\
+0 \\
+\end{pmatrix}$ / $f_3 \begin{pmatrix}
+-9 \\
+9 \\
+0 \\ 
+\end{pmatrix}$ \\ \hline
+ & NB & $f_1 \begin{pmatrix}
+0 \\
+1 \\
+-1 \\
+\end{pmatrix}$ / $f_3 \begin{pmatrix}
+0 \\
+1 \\
+-1 \\
+\end{pmatrix}$ & $f_1 \begin{pmatrix}
+0 \\
+0 \\
+0 \\
+\end{pmatrix}$ / $f_3 \begin{pmatrix}
+0 \\
+0 \\
+0 \\ 
+\end{pmatrix}$ \\ \hline
+\end{tabular}
+\\
+\\
+
+If the network structure is public knowledge, the players will be able to compute the payoffs for their strategy profiles:
+\\
+\\
+\begin{tabular}{|l|l|c|c|}
+\hline
+ & Player 2 & & \\
+\hline
+Player 1 & & B & NB \\
+\hline
+ & B & \underline{0}/3.833 & -0.5714/\underline{4.4048} \\
+\hline
+ & NB & \underline{0}/-M & \underline{0}/\underline{0} \\
+\hline
+\end{tabular}
+\\
+\\
+
+As can be seen from the table, the unique Nash equilibrium of in this game with stylized strategy profiles is that no player contributes towards a bailout. It can be shown that this does not only hold true for the stylized strategy profiles analysed above, but for all feasible strategy profiles.
+
+\begin{theorem} \label{the:equilibrium}
+When bailout contributions are seen as a non-cooperative game, the unique Nash equilibrium is that no player contributes towards a bailout.
+\end{theorem}
+
+\textit{Proof}: see appendix
+
+\subsection{Policy intervention}
+Theorem~\ref{the:equilibrium} implies that an endogenous bailout is not an equilibrium solution. If a bailout is deemed socially efficient, a policy intervention is thus necessary. However, the policy maker does not have to contribute any funds to the bailout. If the efficient solution presented above is enforced in the form of a tax, the solution Pareto efficient solution will be free of cost for the policymaker: $\vec{1}' t=0$ (this follows from the definition of $t$ as a bailout vector).
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\bibliographystyle{plain} 
+\bibliography{lit}
+
+\appendix
+\section{Proof of Theorem~\ref{the:socefficiency}}
+\begin{proof}
+According to Lemma~\ref{lem:efficientbailout}, a bailout under which all firms in default are bailed out is efficient iff the total capital shortfall is less than the contagion losses. Hence I need to show that the following holds true under the conditions stated above:
+\[
+\bar{p}-p^*-(\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p}))>0
+\]
+Rewrite:
+
+Total losses: $\bar{p}-p^*=
+\begin{cases}
+(\bar{p}_i-e_i-(\Pi' p^* )_i  &\mbox{if } i \in D^*  \\
+0 &\mbox{otherwise}
+\end{cases}$
+
+Capital shortfall: $\bar{p}-((e+\Pi' \bar{p}) \wedge \bar{p})=
+\begin{cases}
+\bar{p}_i-e_i-(\Pi'\bar{p})_i  &\mbox{if } i \in D \\
+0 &\mbox{otherwise}
+\end{cases}$
+
+Total losses minus capital shortfall
+\begin{align*}
+& \begin{cases}
+\bar{p}_i-e_i-(\Pi'p^* )_i  &\mbox{if } i\in D^*  \\
+0 &\mbox{otherwise}
+\end{cases}
+-
+\begin{cases}
+(\bar{p}_i-e_i-(\Pi' \bar{p})_i  &\mbox{if } i \in D \\
+0 &\mbox{otherwise}
+\end{cases}
+\\ & =
+\begin{cases}
+\bar{p}_i-e_i-(\Pi' p^* )_i-(\bar{p}_i-e_i-(\Pi' \bar{p})_i )  &\mbox{if } i \in D \\
+\bar{p}_i-e_i-(\Pi' p^* )_i  &\mbox{if } i\in D^*,i \notin D \\
+0 &\mbox{otherwise}
+\end{cases}
+\\ & =
+\begin{cases}
+((\Pi' (\bar{p}-p^* ))_i  &\mbox{if } i\in D \\
+\bar{p}_i-e_i-(\Pi' p^* )_i  &\mbox{if } i \in D^*, i \in D \\
+0 &\mbox{otherwise}
+\end{cases}
+\\ & \ge 0
+\end{align*}
+
+Now assume that $\sum_{i\in D}\sum_{j\in D^*}\Pi'_{ij} >0$
+
+Note that $\sum_{i\in D}\sum_{j\in D^*}\Pi'_{ij} >0 \Rightarrow  D^* \supset \emptyset$
+
+This implies: 
+\[
+\sum_{i\in D}\sum_{j\in D^*}\Pi'_{ij} >0,D^* \supset \emptyset \Rightarrow \exists i\in D \colon(\Pi' (\bar{p}-p^* ))_i>0
+\]
+
+Alternatively, assume that $D\subset D^*$
+
+This implies: 
+\begin{align*}
+\begin{split}
+D^*\setminus D \supset \emptyset,\bar{p}_i-e_i-(\Pi' p^* )_i>0 \forall i \in D^* \Rightarrow \bar{p}_i-e_i-(\Pi' p^* )_i>0 \forall i \in D^*\setminus D \\ \Rightarrow
+\begin{cases}
+(\Pi' (\bar{p}-p^* ))_i  &\mbox{if } i \in D \\
+\bar{p}_i-e_i-(\Pi' p^* )_i  &\mbox{if } i\in D^*,i \notin D \\
+0 &\mbox{otherwise}
+\end{cases}
+>0
+\end{split}
+\end{align*}
+
+\end{proof}
+
+\section{Proof of Theorem~\ref{the:shortfall}}
+\begin{proof}
+
+Note that the initial capital shortfall can be rewritten: 
+\[
+((e+\Pi' \bar{p})\wedge \bar{p}) = \bar{p}-(\Lambda(\bar{p})(e+\Pi' \bar{p})+(I-\Lambda(\bar{p} )) \bar{p})
+\]
+Now I need to show that
+\begin{multline*}
+\vec{1}' (\bar{p}-(\Lambda(\bar{p})(e+\Pi' \bar{p})+(I-\Lambda(\bar{p})) \bar{p})-(I-\Lambda(p^* )) \Pi' (\bar{p}-p^* ) \\
+-(\Lambda(p^* )-\Lambda(\bar{p}))(e+\Pi' \bar{p}-\bar{p}))=0
+\end{multline*}
+
+Note that the losses received are equal to the difference in equity values before and after contagion: 
+\[
+\Pi' (\bar{p}-p^* )=\Pi' \bar{p}-\Pi' p^*=e+\Pi' \bar{p}-\bar{p}-(e+\Pi' p^*-\bar{p})
+\]
+
+Insert into the equation:
+\begin{align*}
+\begin{split}
+& \vec{1}'(p\bar{p}-\Lambda(\bar{p})(e+\Pi' \bar{p})-(I-\Lambda(\bar{p})) \bar{p}-\Pi' (\bar{p}-p^* )+\Lambda(p^* )(e+\Pi' \bar{p}-\bar{p}-(e+\Pi' p^*-\bar{p})) \\
+& -\Lambda(p^* )(e+\Pi' \bar{p}-\bar{p})+\Lambda(\bar{p})(e+\Pi' \bar{p}-\bar{p})) \\
+& =\vec{1}'(-\Pi' (\bar{p}-p^* )-\Lambda(p^* )(e+\Pi' p^*-\bar{p})) \\
+& =\vec{1}'(\Lambda(p^* )(\bar{p}-e-\Pi' p^* )-\Pi' (\bar{p}-p^* ))
+\end{split}
+\end{align*}
+
+Remember that $\vec{1}' \Pi'= \vec{1}'$, hence I can write
+\begin{align*}
+\begin{split}
+& \vec{1}' (\Lambda(p^* )(\bar{p}-e-\Pi' p^* )-\Pi' (\bar{p}-p^* ))=\vec{1}' (\Lambda(p^* )(\bar{p}-e-\Pi' p^* )-(\bar{p}-p^* )) \\
+& =\vec{1}' (
+\begin{cases}
+\bar{p}_i-e_i-(\Pi' p^* )_i  &mbox{if } i \in D^* \\
+0 &\mbox{otherwise}
+\end{cases}
+-(\bar{p}-p^* ))
+\end{split}
+\end{align*}
+
+Note that $i\notin D^*\Leftrightarrow \bar{p}_i=p_i^*$ and rewrite:
+\[
+\vec{1}' (
+\begin{cases}
+(\bar{p}_i-e_i-(\Pi' p^* )_i  &\mbox{if } i\in D^*  \\
+0 &\mbox{otherwise}
+\end{cases}
+-
+\begin{cases}
+\bar{p}_i-p_i^*  &\mbox(if ) i \in D^* \\
+0 &\mbox{otherwise}
+\end{cases}
+)
+\]
+
+
+Note that $p^*=(e+\Pi' p^* ) \wedge \bar{p} \Rightarrow \forall i \in D^* \colon p_i^*=e_i+(\Pi' p^* )_i$, hence I can write:
+
+\begin{align*}
+\begin{split}
+& \vec{1}'(
+\begin{cases}
+\bar{p}_i-e_i-(\Pi' p^* )_i  &\mbox{if } i\in D^*  \\
+0 &\mbox{otherwise}
+\end{cases}
+-
+\begin{cases}
+\bar{p}_i-p_i^*  &\mbox{if } i\in D^*  \\
+0 &\mbox{otherwise}
+\end{cases}
+)
+\\ 
+& =\vec{1}'(
+\begin{cases}
+\bar{p}_i-e_i-(\Pi' p^* )_i  &\mbox{if } i\in D^*  \\
+0 &\mbox{otherwise}
+\end{cases}
+-
+\begin{cases}
+\bar{p}_i-e_i-(\Pi' p^* )_i  \mbox{if } i\in D^* \\
+0 \mbox{otherwise }
+\end{cases}
+)=0
+\end{split}
+\end{align*}
+
+\end{proof}
+
+\section{Proof of Theorem~\ref{the:equilibrium}}
+\begin{proof}
+
+Consider the strategies for the set of firms $i\notin D^*$ that are not pushed into default:
+
+\textbf{Case 1}: all firms in default are fully bailed out, firm $i$ contributes nothing:
+\[
+\vec{1}' b_{j/i}= \vec{1}' \Lambda(\bar{p})(\bar{p}-e-\Pi' \bar{p}),b_i=0 \Rightarrow f_i=(\Pi' (\bar{p}-p^* ))_i
+\]
+
+\textbf{Case 2}: all firms in default are fully bailed out, firm i contributes to the bailout:
+\[
+\vec{1}'b=\vec{1}' \Lambda(\bar{p})(\bar{p}-e-\Pi' \bar{p}),b_i<0 \Rightarrow f_i=(\Pi' (\bar{p}-p^* ))_i+b_i<(\Pi' (\bar{p}-p^* ))_i
+\]
+
+Hence, the payoff for firm $i$ is less than in case 1 and the strategy of contributing nothing towards a bailout strictly dominates.
+
+\textbf{Case 3}: the firms in default are not fully bailed out, firm $i$ does not contribute to the bailout:
+\[
+\vec{1}' b<\vec{1}' \Lambda(\bar{p})(\bar{p}-e-\Pi' \bar{p}),b_i=0 \Rightarrow f_i=(\Pi' (p^* (b)-p^* ))_i<(\Pi' (\bar{p}-p^* ))_i
+\]
+
+\textbf{Case 4}: the firms in default are not fully bailed out, firm i contributes to the bailout
+\[
+\vec{1}' b<\vec{1}' \Lambda(\bar{p})(\bar{p}-e-\Pi' \bar{p}),b_i<0 \Rightarrow f_i=(\Pi' (p^* (b)-p^* ))_i+b_i<(\Pi' (p^* (b)-p^* ))_i
+\]
+
+Hence, regardless of whether the defaulted firms are bailed out fully or only partially, contributing nothing towards a strategy is a strictly dominant strategy for all players that are not pushed into default: $\forall i \notin D^*,\forall b_i<0 \colon f(0,b_(j/i) ) \ge f(b_i<0,b_(j/i) )$. Now given this best strategy for firms that are not pushed into default, consider the strategies for firms $i \notin D^* \setminus D$ that are pushed into default:
+
+Given that, according to Theorem~\ref{the:shortfall}, their combined initial equity is less than the initial capital shortfall if at least one firm remains solvent after contagion losses, it is not possible for them to jointly bail out the initially insolvent firms. Hence any firm contributing towards a bailout would receive a very high penalty $-M$ as a payoff, hence it is not rational for them to contribute towards a bailout. If this was not the case, i.e. all firms are pushed into default, then the combined contagion losses would be equal to the initial capital shortfall according to Theorem~\ref{the:shortfall}, and the same analysis as for the solvent firms above would hold true for these firms. Hence, contributing nothing towards a bailout is a strictly dominant strategy for all players and thus a unique Nash equilibrium.
+
+
+\end{proof}
+
+
+\end{document}
